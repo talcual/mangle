@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPuntos - Encuentra puntos de reciclaje cercanos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2D5A27;
+            --secondary: #4CAF50;
+            --accent: #8BC34A;
+            --light: #E8F5E9;
+            --dark: #1B3A17;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--light) 0%, var(--white) 100%);
+            min-height: 100vh;
+            padding: 8rem 5% 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--secondary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(45, 90, 39, 0.2);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+
+        .features {
+            padding: 4rem 5%;
+            background: var(--white);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--white);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .how-it-works {
+            padding: 4rem 5%;
+            background: var(--light);
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .map-preview {
+            padding: 4rem 5%;
+            background: var(--white);
+            text-align: center;
+        }
+
+        .map-preview h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .map-preview p {
+            color: #555;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .map-mockup {
+            background: linear-gradient(135deg, var(--light) 0%, #c8e6c9 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 3px dashed var(--secondary);
+        }
+
+        .map-pins {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .map-pin {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .pin-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonials {
+            padding: 4rem 5%;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial strong {
+            color: var(--accent);
+        }
+
+        .cta-section {
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            text-align: center;
+            color: var(--white);
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-section .btn {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .cta-section .btn:hover {
+            background: var(--light);
+        }
+
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero {
+                padding-top: 6rem;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .features h2, .how-it-works h2, .map-preview h2, .testimonials h2, .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            EcoPuntos
+        </div>
+        <nav>
+            <a href="#features">Beneficios</a>
+            <a href="#how-it-works">Cómo funciona</a>
+            <a href="#testimonials">Testimonios</a>
+            <a href="#contact">Contacto</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Encuentra puntos de <span>reciclaje</span> cerca de ti</h1>
+            <p>Únete a la comunidad EcoPuntos y contribuye a un planeta más limpio. Localiza contenedores de reciclaje, puntos de acopio y centros de reciclaje en tu zona.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Encontrar puntos cerca de mí</a>
+                <a href="#how-it-works" class="btn btn-secondary">Saber más</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=500&h=400&fit=crop" alt="Reciclaje">
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2>¿Por qué usar EcoPuntos?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <h3>Ubicación precisa</h3>
+                <p>Encuentra los puntos de reciclaje más cercanos a tu ubicación actual con tecnología de geolocalización.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                </div>
+                <h3>Información detallada</h3>
+                <p>Conoce qué materiales acepta cada punto: plástico, papel, vidrio, metales y más.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                </div>
+                <h3>Comunidad activa</h3>
+                <p>Únete a miles de personas que ya están reciclando correctamente y cuida el medio ambiente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how-it-works">
+        <h2>¿Cómo funciona?</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Activa tu ubicación</h3>
+                <p>Permítenos acceder a tu ubicación para mostrarte los puntos más cercanos.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Explora el mapa</h3>
+                <p>Navega por el mapa interactivo y descubre todos los puntos de reciclaje disponibles.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Recicla correctamente</h3>
+                <p>Visita el punto más cercano y disposed tus residuos de forma responsable.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-preview">
+        <h2>Explora tu zona</h2>
+        <p>Nuestro mapa interactivo te muestra todos los puntos de reciclaje cercanos, con información sobre tipos de materiales aceptados y horarios de atención.</p>
+        <div class="map-mockup">
+            <svg width="100" height="100" viewBox="0 0 24 24" fill="#2D5A27">
+                <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
+            </svg>
+            <p style="color: var(--primary); margin-top: 1rem;">Mapa interactivo en desarrollo</p>
+            <div class="map-pins">
+                <div class="map-pin">
+                    <div class="pin-icon"></div>
+                    <span>Punto verde - 500m</span>
+                </div>
+                <div class="map-pin">
+                    <div class="pin-icon"></div>
+                    <span>Centro de acopio - 1.2km</span>
+                </div>
+                <div class="map-pin">
+                    <div class="pin-icon"></div>
+                    <span>Contenedor vidrio - 800m</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <h2>Lo que dicen nuestros usuarios</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <p>"Desde que descubrí EcoPuntos, reciclar es mucho más fácil. Ya no tengo excusas para no hacerlo correctamente."</p>
+                <strong>- María G., Ciudad de México</strong>
+            </div>
+            <div class="testimonial">
+                <p>"Encontré un centro de acopio a solo 10 minutos de mi casa. Todo muy bien organizado y el personal muy amable."</p>
+                <strong>- Carlos R., Guadalajara</strong>
+            </div>
+            <div class="testimonial">
+                <p>"Excelente app. Me ayuda a enseñar a mis hijos la importancia del reciclaje y cómo hacerlo bien."</p>
+                <strong>- Ana L., Monterrey</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <h2>¡Empieza a reciclar hoy!</h2>
+        <p>Únete a la comunidad EcoPuntos y sé parte del cambio hacia un futuro más sostenible.</p>
+        <a href="#" class="btn">Comenzar ahora</a>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="justify-content: center; margin-bottom: 1rem;">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                EcoPuntos
+            </div>
+            <div class="footer-links">
+                <a href="#">Términos y condiciones</a>
+                <a href="#">Política de privacidad</a>
+                <a href="#">Acerca de nosotros</a>
+                <a href="#">Contacto</a>
+            </div>
+            <p>&copy; 2026 EcoPuntos. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
